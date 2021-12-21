@@ -10,16 +10,32 @@ var btnMenu = el('#menu-toggle');
 // Menu principal
 var menu = el('.wrap>nav');
 
-// Monitora cliques no btnMenu, chamando toggleMenu()
+/**
+ * Monitora cliques no btnMenu, chamando toggleMenu()
+ *  Referências: https://www.w3schools.com/jsref/dom_obj_event.asp
+ */
 btnMenu.onclick = menuToggle;
 
 // Monitora modanças na resolução e redireciona para 'changeRes()'
-window.addEventListener('resize', changeRes);
+window.onresize = changeRes;
+
+// Monitora cliques nas tags <a>...</a>
+var links = els('a');
+for (var i = 0; i < links.length; i++) {
+    links[i].addEventListener('click', routerLink);
+}
+
+/**********************
+ * Funções JavaScript *
+ **********************/
 
 // Ação do clique no botão do menu 
 function menuToggle() {
 
-    // Se o menu está visível (display="block"), oculta ele
+    /** 
+     * Se o menu está visível (display="block"), oculta ele.
+     *   Referências: https://www.w3schools.com/jsref/jsref_getcomputedstyle.asp
+     */
     if (window.getComputedStyle(menu, null).display === 'block') hideMenu();
 
     // Se o menu está oculto (displa="none"), mostra ele
@@ -29,27 +45,36 @@ function menuToggle() {
     return false;
 }
 
-// Mostra menu
+// Mostra menu, troca ícone e altera 'title' do botão.
 function showMenu() {
+
+    /**
+     * Referências:
+     *   https://www.w3schools.com/jsref/dom_obj_style.asp
+     *   https://www.w3schools.com/jsref/prop_element_classlist.asp
+     *   https://www.w3schools.com/jsref/met_element_setattribute.asp     * 
+     */
+
     menu.style.display = 'block';
-    // btnMenu.innerHTML = '<i class="fas fa-ellipsis-h fa-fw"></i>';
-    btnMenu.setAttribute('title', 'Oculta o menu');
     btnMenu.classList.add('fa-rotate-90');
+    btnMenu.setAttribute('title', 'Oculta o menu');
 }
 
-// Oculta menu
+// Oculta menu, troca ícone e altera 'title' do botão.
 function hideMenu() {
     menu.style.display = 'none';
-    // btnMenu.innerHTML = '<i class="fas fa-ellipsis-v fa-fw"></i>';
-    btnMenu.setAttribute('title', 'Mostra o menu');
     btnMenu.classList.remove('fa-rotate-90');
+    btnMenu.setAttribute('title', 'Mostra o menu');
 }
 
 // Processa mudanças na resolução
 function changeRes() {
-    
-    // Se a resolução é maior, sempre mostra o menu
-    if(document.documentElement.clientWidth > 767) showMenu();
+
+    /**
+     * Se a resolução é maior, sempre mostra o menu.
+     *   Referências: https://www.w3schools.com/jsref/prop_document_documentelement.asp
+     */
+    if (document.documentElement.clientWidth > 767) showMenu();
 
     // Se a resolução é menor, sempre oculta o menu
     else hideMenu();
@@ -58,12 +83,61 @@ function changeRes() {
     return false;
 }
 
-// Atalho para document.querySelector()
+function routerLink(event) {
+
+    // Obtém os atributos 'href' e 'target' do link clicado
+    var href = this.getAttribute('href');
+    var target = this.getAttribute('target');
+
+    // Se href não existe, não faz nada
+    if (href == '' || href == null) {
+        event.preventDefault();
+        return false;
+    }
+
+    /** 
+     * Se href é um link externo ('http://', 'https://'), uma âncora ('#')
+     * ou o target = '_blank', devolve o controle para o HTML.
+     */
+    if (
+        target === '_blank' ||
+        href.substr(0, 7) === 'http://' ||
+        href.substr(0, 8) === 'https://' ||
+        href.substr(0, 1) === '#'
+    ) return true;
+
+    // Se é uma rota (link interno), carrega a página solcitada
+    else {
+        // Bloqueia ação do HTML
+        event.preventDefault();
+        loadPage(href);
+    }
+    
+     // Trrmna sem fazer mais nada
+    return false;
+}
+
+// Carrega a página conforme a rota definida
+function loadPage(href) {
+    console.log(href);
+}
+
+/************************
+ * Funções de uso geral *
+ ************************/
+
+/**
+ * Atalho para document.querySelector()
+ *   Referências: https://www.w3schools.com/jsref/met_document_queryselector.asp
+ */
 function el(selector) {
     return document.querySelector(selector);
 }
 
-// Atalho para document.querySelectorAll()
+/**
+ * Atalho para document.querySelectorAll()
+ *   Referências: https://www.w3schools.com/jsref/met_document_queryselectorall.asp
+ */
 function els(selector) {
     return document.querySelectorAll(selector);
 }
