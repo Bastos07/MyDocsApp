@@ -19,16 +19,6 @@ btnMenu.onclick = menuToggle;
 // Monitora modanças na resolução e redireciona para 'changeRes()'
 window.onresize = changeRes;
 
-// Monitora cliques nas tags <a>...</a>
-var links = els('a');
-for (var i = 0; i < links.length; i++) {
-    links[i].addEventListener('click', routerLink);
-}
-
-/**********************
- * Funções JavaScript *
- **********************/
-
 // Ação do clique no botão do menu 
 function menuToggle() {
 
@@ -82,49 +72,6 @@ function changeRes() {
     // Sai sem fazer mais nada
     return false;
 }
-
-function routerLink(event) {
-
-    // Obtém os atributos 'href' e 'target' do link clicado
-    var href = this.getAttribute('href');
-    var target = this.getAttribute('target');
-
-    // Se href não existe, não faz nada
-    if (href == '' || href == null) {
-        event.preventDefault();
-        return false;
-    }
-
-    /** 
-     * Se href é um link externo ('http://', 'https://'), uma âncora ('#')
-     * ou o target = '_blank', devolve o controle para o HTML.
-     */
-    if (
-        target === '_blank' ||
-        href.substr(0, 7) === 'http://' ||
-        href.substr(0, 8) === 'https://' ||
-        href.substr(0, 1) === '#'
-    ) return true;
-
-    // Se é uma rota (link interno), carrega a página solcitada
-    else {
-        // Bloqueia ação do HTML
-        event.preventDefault();
-        loadPage(href);
-    }
-    
-     // Trrmna sem fazer mais nada
-    return false;
-}
-
-// Carrega a página conforme a rota definida
-function loadPage(href) {
-    console.log(href);
-}
-
-/************************
- * Funções de uso geral *
- ************************/
 
 /**
  * Atalho para document.querySelector()
