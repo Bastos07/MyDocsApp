@@ -60,3 +60,26 @@
     color: rgb(219, 219, 219);
     cursor: not-allowed;
 }
+
+/* Barra lateral */
+
+aside.contacts div {
+    display: flex;
+    flex-direction: column;
+    line-height: 2.5;
+    margin-left: 1rem;
+    padding-bottom: 1rem;
+}
+
+aside.contacts a {
+    display: flex;
+    align-items: center;
+}
+
+aside.contacts a:hover {
+    text-decoration: none;
+}
+
+aside.contacts i {
+    font-size: 2rem;
+}
