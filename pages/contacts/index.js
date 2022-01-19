@@ -187,4 +187,7 @@ if (el('#contact')) {
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].onkeyup = inputFilters;
     }
+
+    // Lista de redes sociais na barra lateral
+    getSocialList('.contact-list', true);
 }
